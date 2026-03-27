@@ -104,9 +104,9 @@ cmake -B build
 cmake --build build -j --config Release
 ```
 
-## install espeak
+# telegram login
 ```
-sudo apt-get install espeak
+python telegram_login.py
 ```
 
 # run with loop and wakeword
