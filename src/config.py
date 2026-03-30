@@ -11,7 +11,7 @@ BOT_USERNAME = os.getenv("bot_username", "")
 
 # whisper.cpp
 WHISPER_MAIN = "./whisper.cpp/build/bin/whisper-cli"
-WHISPER_MODEL = "./whisper.cpp/models/ggml-small.bin"
+WHISPER_MODEL = "./whisper.cpp/models/ggml-base.bin"
 
 # Audio files
 #BASE_DIR = Path(__file__).resolve().parent
@@ -35,20 +35,24 @@ TELEGRAM_TIMEOUT = 120.0
 # Edge TTS voices
 VOICE_KO = "ko-KR-SunHiNeural"
 VOICE_EN = "en-US-JennyNeural"
+VOICE_JP = "ja-JP-NanamiNeural"
+VOICE_ZH = "zh-CN-XiaoxiaoNeural"
 
 # wakeword tflite
-WAKEWORD_TFLITE = "./models/wakeword.tflite"
+WAKEWORD_TFLITE = "./kws2_float32.tflite"
 
 # Wakeword settings
 WAKE_BLOCK_SECONDS = 1.0      # wakeword detection input length (seconds)
-WAKE_THRESHOLD = 0.5          # threshold for sigmoid output of 1
 WAKE_COOLDOWN_SECONDS = 1.0   # cooldown period to prevent consecutive detections
 
-# MFCC settings
-MFCC_N_MFCC = 13
-MFCC_N_FFT = 512
-MFCC_HOP_LENGTH = 160         # 10ms @ 16kHz
-MFCC_WIN_LENGTH = 400         # 25ms @ 16kHz
+# Wakeword audio / log-mel settings
+WAKE_SAMPLE_RATE = 16000
+WAKE_N_MELS = 64
+WAKE_N_FFT = 512
+WAKE_HOP_LENGTH = 160         # 10ms @ 16kHz
+WAKE_WIN_LENGTH = 400         # 25ms @ 16kHz
+WAKE_FMIN = 20
+WAKE_FMAX = WAKE_SAMPLE_RATE // 2
 
 # Wakeword RMS skip threshold
 WAKE_MIN_RMS = 300

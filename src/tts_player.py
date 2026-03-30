@@ -3,13 +3,21 @@ import shutil
 import subprocess
 import edge_tts
 
-from config import VOICE_KO, VOICE_EN
+from config import VOICE_KO, VOICE_EN, VOICE_JP, VOICE_ZH
 
+import fasttext
 
-def detect_tts_voice(text: str) -> str:
-    hangul_count = len(re.findall(r"[가-힣]", text))
-    latin_count = len(re.findall(r"[A-Za-z]", text))
-    return VOICE_KO if hangul_count >= latin_count else VOICE_EN
+model = fasttext.load_model("lid.176.ftz")
+
+def get_voice_by_lang(lang: str) -> str:
+    lang = (lang or "").lower()
+    if lang.startswith("ko"):
+        return VOICE_KO
+    if lang.startswith("ja"):
+        return VOICE_JP
+    if lang.startswith("zh"):
+        return VOICE_ZH
+    return VOICE_EN
 
 
 def check_audio_tools() -> None:
@@ -22,12 +30,12 @@ def check_audio_tools() -> None:
 async def synthesize_to_wav(text: str, mp3_path: str, wav_path: str) -> str:
     check_audio_tools()
 
-    voice = detect_tts_voice(text)
+    lang = model.predict(text)[0][0].split("__")[-1]
+    voice = get_voice_by_lang(lang)
     print(f"TTS voice: {voice}")
 
     tts = edge_tts.Communicate(text, voice)
     await tts.save(mp3_path)
-    print(f"MP3 saved successfully: {mp3_path}")
 
     subprocess.run(
         [
@@ -43,7 +51,6 @@ async def synthesize_to_wav(text: str, mp3_path: str, wav_path: str) -> str:
         stderr=subprocess.DEVNULL,
     )
 
-    print(f"WAV conversion completed: {wav_path}")
     return wav_path
 
 
