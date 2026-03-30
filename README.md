@@ -112,6 +112,11 @@ cmake -B build
 cmake --build build -j --config Release
 ```
 
+# download lid176
+```bash
+wget https://dl.fbaipublicfiles.com/fasttext/supervised-models/lid.176.ftz
+```
+
 # telegram login
 ```
 python telegram_login.py
