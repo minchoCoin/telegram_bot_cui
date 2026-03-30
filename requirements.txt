@@ -1,0 +1,7 @@
+telethon
+python-dotenv
+sounddevice
+numpy
+edge-tts
+librosa
+tensorflow
