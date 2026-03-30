@@ -6,7 +6,7 @@ from stt_whisper import transcribe_with_whisper_cpp
 from telegram_bridge import send_to_telegram_and_get_reply
 from tts_player import synthesize_to_wav, play_wav
 from wakeword_detector import WakewordDetector
-
+from gpiozero import LED
 async def async_main():
     #detector = WakewordDetector()
 

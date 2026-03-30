@@ -6,3 +6,4 @@ edge-tts
 librosa
 tensorflow
 fasttext
+lgpio

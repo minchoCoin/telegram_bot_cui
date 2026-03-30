@@ -85,9 +85,10 @@ bot_username='@your_openclaw_bot_id'
 ```bash
 sudo apt install portaudio19-dev
 sudo apt install libportaudio2 libasound-dev
+sudo apt install python3-gpiozero python3-lgpio
 ```
 ```bash
-python -m venv .venv
+python3 -m venv --system-site-packages .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 ```
@@ -116,6 +117,8 @@ cmake --build build -j --config Release
 ```bash
 wget https://dl.fbaipublicfiles.com/fasttext/supervised-models/lid.176.ftz
 ```
+
+
 
 # telegram login
 ```
