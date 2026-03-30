@@ -1,6 +1,7 @@
 # telegram_bot_cui
 talk to your telegram bot with Conversational User Interface(CUI), on-device TTS and STT
 
+Wake up word: marvin
 # requirements
 
 ## turn on local LLM
@@ -90,6 +91,13 @@ python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 ```
+
+## modify fasttext library
+```py
+#fasttext.py 239 line
+return labels, np.asarray(probs)
+```
+
 ## login
 ```
 python telegram_login.py
