@@ -34,6 +34,7 @@ def transcribe_with_whisper_cpp(wav_path: str) -> str:
         "-f", wav_path,
         "-l", "auto",
         "--no-prints",
+        "--no-timestamps"
     ]
 
     result = subprocess.run(
