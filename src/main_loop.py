@@ -11,20 +11,21 @@ async def async_main():
     detector = WakewordDetector()
 
     while True:
-        print("\n=== wakeword waiting ===")
+        print("\n=== 기동어 대기 ===")
         detector.wait_for_wakeword()
 
         record_until_silence(RECORD_WAV)
 
         user_text = transcribe_with_whisper_cpp(RECORD_WAV)
-        print("[STT result]", user_text)
-
+        print("[STT 결과]", user_text)
+        if user_text=="":
+            continue
         if user_text.lower() in ["exit", "quit", "종료"]:
-            print("program exit")
+            print("프로그램 종료")
             break
 
         reply_text = await send_to_telegram_and_get_reply(user_text)
-        print("[Telegram reply]", reply_text)
+        print("[텔레그램 답변]", reply_text)
 
         await synthesize_to_wav(reply_text, TTS_MP3, TTS_WAV)
         play_wav(TTS_WAV)

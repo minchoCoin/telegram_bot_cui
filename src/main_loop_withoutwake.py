@@ -18,9 +18,10 @@ async def async_main():
 
         user_text = transcribe_with_whisper_cpp(RECORD_WAV)
         print("[STT result]", user_text)
-
+        if user_text=="":
+            continue
         if user_text.lower() in ["exit", "quit", "종료"]:
-            print("program exit")
+            print("program will exit.")
             break
 
         reply_text = await send_to_telegram_and_get_reply(user_text)

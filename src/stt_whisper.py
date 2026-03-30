@@ -45,6 +45,6 @@ def transcribe_with_whisper_cpp(wav_path: str) -> str:
 
     text = clean_whisper_text(result.stdout)
     if not text:
-        raise RuntimeError("STT result is empty.")
+        return ""
     text = "This text is transcribed text. if followed text is english, then speak in english, and if korean, then speak in korean. ANSWER AS MUCH AS SIMPLE: \n" + text
     return text
