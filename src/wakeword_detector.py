@@ -1,4 +1,5 @@
 import time
+import threading
 from pathlib import Path
 
 import librosa
@@ -122,32 +123,36 @@ class WakewordDetector:
         score = float(y[1])
         return pred, score
 
-    def wait_for_wakeword(self):
+    def listen_once(self):
         frames = int(WAKE_SAMPLE_RATE * WAKE_BLOCK_SECONDS)
 
+        audio = sd.rec(
+            frames,
+            samplerate=WAKE_SAMPLE_RATE,
+            channels=CHANNELS,
+            dtype=DTYPE,
+            blocking=True,
+        )
+
+        mono = audio.reshape(-1)
+        rms = self.compute_rms(mono)
+
+        if rms < WAKE_MIN_RMS:
+            return False
+
+        pred, score = self.predict(mono)
+        print(f"[Wakeword] rms={rms:.1f}, pred={pred}, marvin_prob={score:.4f}")
+
+        now = time.time()
+        if pred == 1 and (now - self.last_detect_time) >= WAKE_COOLDOWN_SECONDS:
+            self.last_detect_time = now
+            return True
+
+        return False
+
+    def wait_for_wakeword(self):
         print("Waiting for wakeword...")
-
         while True:
-            audio = sd.rec(
-                frames,
-                samplerate=WAKE_SAMPLE_RATE,
-                channels=CHANNELS,
-                dtype=DTYPE,
-                blocking=True,
-            )
-
-            mono = audio.reshape(-1)
-            rms = self.compute_rms(mono)
-
-            if rms < WAKE_MIN_RMS:
-                print(f"[Wakeword] skipped (rms={rms:.1f})")
-                continue
-
-            pred, score = self.predict(mono)
-            print(f"[Wakeword] rms={rms:.1f}, pred={pred}, marvin_prob={score:.4f}")
-
-            now = time.time()
-            if pred == 1 and (now - self.last_detect_time) >= WAKE_COOLDOWN_SECONDS:
-                self.last_detect_time = now
+            if self.listen_once():
                 print("Wakeword detected. Starting recording.")
                 return True
