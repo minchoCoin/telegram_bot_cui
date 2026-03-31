@@ -11,7 +11,7 @@ BOT_USERNAME = os.getenv("bot_username", "")
 
 # whisper.cpp
 WHISPER_MAIN = "./whisper.cpp/build/bin/whisper-cli"
-WHISPER_MODEL = "./whisper.cpp/models/ggml-base.bin"
+WHISPER_MODEL = "./whisper.cpp/models/ggml-small.bin"
 
 # Audio files
 #BASE_DIR = Path(__file__).resolve().parent
@@ -69,3 +69,5 @@ WAKE_FMAX = WAKE_SAMPLE_RATE // 2
 
 # Wakeword RMS skip threshold
 WAKE_MIN_RMS = 300
+
+WAKEWORD_THRESHOLD = 0.5  # wakeword detection threshold (0.0 ~ 1.0)

@@ -21,6 +21,7 @@ from config import (
     WAKE_N_MELS,
     WAKE_SAMPLE_RATE,
     WAKE_WIN_LENGTH,
+    WAKEWORD_THRESHOLD,
 )
 
 
@@ -116,7 +117,7 @@ class WakewordDetector:
 
         if len(y) == 1:
             score = float(y[0])
-            pred = int(score >= 0.5)
+            pred = int(score >= WAKEWORD_THRESHOLD)
             return pred, score
 
         pred = int(np.argmax(y))
