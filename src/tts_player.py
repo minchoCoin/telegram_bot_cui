@@ -2,8 +2,8 @@ import re
 import shutil
 import subprocess
 import edge_tts
-
-from config import VOICE_KO, VOICE_EN, VOICE_JP, VOICE_ZH
+    
+from config import VOICE_BY_LANG
 
 import fasttext
 
@@ -11,13 +11,7 @@ model = fasttext.load_model("lid.176.ftz")
 
 def get_voice_by_lang(lang: str) -> str:
     lang = (lang or "").lower()
-    if lang.startswith("ko"):
-        return VOICE_KO
-    if lang.startswith("ja"):
-        return VOICE_JP
-    if lang.startswith("zh"):
-        return VOICE_ZH
-    return VOICE_EN
+    return VOICE_BY_LANG.get(lang, VOICE_BY_LANG["default"])
 
 
 def check_audio_tools() -> None:

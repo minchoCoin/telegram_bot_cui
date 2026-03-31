@@ -32,11 +32,15 @@ RMS_THRESHOLD = 700  # 환경에 따라 조절
 TELEGRAM_IDLE_SECONDS = 5.0
 TELEGRAM_TIMEOUT = 120.0
 
-# Edge TTS voices
-VOICE_KO = "ko-KR-SunHiNeural"
-VOICE_EN = "en-US-JennyNeural"
-VOICE_JP = "ja-JP-NanamiNeural"
-VOICE_ZH = "zh-CN-XiaoxiaoNeural"
+
+VOICE_BY_LANG = {
+    "ko": "ko-KR-SunHiNeural",
+    "en": "en-US-JennyNeural",
+    "ja":"ja-JP-NanamiNeural",
+    "zh":"zh-CN-XiaoxiaoNeural",
+    "default": "en-US-JennyNeural",
+}
+
 
 # wakeword tflite
 WAKEWORD_TFLITE = "./kws2_float32.tflite"
