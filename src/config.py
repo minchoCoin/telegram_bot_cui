@@ -38,6 +38,15 @@ VOICE_BY_LANG = {
     "en": "en-US-JennyNeural",
     "ja":"ja-JP-NanamiNeural",
     "zh":"zh-CN-XiaoxiaoNeural",
+    "es":"es-ES-ElviraNeural",
+    "hi":"hi-IN-SwaraNeural",
+    "pt":"pt-PT-RaquelNeural",
+    "bn":"bn-IN-SapnaNeural",
+    "de":"de-DE-KatjaNeural",
+    "fr":"fr-FR-DeniseNeural",
+    "pt":"pt-BR-FranciscaNeural",
+    "id":"id-ID-GadisNeural",
+    "ar":"ar-SA-HamedNeural",
     "default": "en-US-JennyNeural",
 }
 
