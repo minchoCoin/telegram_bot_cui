@@ -31,7 +31,8 @@ WIN_LENGTH = 400
 FMIN = 20
 FMAX = SAMPLE_RATE // 2
 
-BATCH_SIZE = 1
+TRAIN_BATCH_SIZE = 64
+EXPORT_BATCH_SIZE = 1
 EPOCHS = 10
 LEARNING_RATE = 1e-3
 BACKGROUND_CLASS = "_background_noise_"
@@ -205,19 +206,19 @@ print("X_test :", X_test.shape, y_test.shape)
 train_ds = (
     tf.data.Dataset.from_tensor_slices((X_train, y_train))
     .shuffle(len(X_train), seed=SEED)
-    .batch(BATCH_SIZE)
+    .batch(TRAIN_BATCH_SIZE)
     .prefetch(tf.data.AUTOTUNE)
 )
 
 val_ds = (
     tf.data.Dataset.from_tensor_slices((X_val, y_val))
-    .batch(BATCH_SIZE)
+    .batch(TRAIN_BATCH_SIZE)
     .prefetch(tf.data.AUTOTUNE)
 )
 
 test_ds = (
     tf.data.Dataset.from_tensor_slices((X_test, y_test))
-    .batch(BATCH_SIZE)
+    .batch(TRAIN_BATCH_SIZE)
     .prefetch(tf.data.AUTOTUNE)
 )
 
@@ -225,8 +226,8 @@ test_ds = (
 # =========================================================
 # 7. LSTM classifier
 # =========================================================
-def build_lstm_classifier(input_shape):
-    inputs = tf.keras.Input(shape=input_shape, batch_size=BATCH_SIZE, name="logmel_input")
+def build_lstm_classifier(input_shape, batch_size=None):
+    inputs = tf.keras.Input(shape=input_shape, batch_size=batch_size, name="logmel_input")
 
     #x = tf.keras.layers.Masking(mask_value=0.0)(inputs)
     x = tf.keras.layers.LSTM(128, return_sequences=True)(inputs)
@@ -274,7 +275,10 @@ history = model.fit(
 # 8-1. export tflite(float32)
 # =========================================================
 def export_tflite_float32(model, output_path):
-    converter = tf.lite.TFLiteConverter.from_keras_model(model)
+    export_model = build_lstm_classifier(input_shape, batch_size=EXPORT_BATCH_SIZE)
+    export_model.set_weights(model.get_weights())
+
+    converter = tf.lite.TFLiteConverter.from_keras_model(export_model)
 
     converter.target_spec.supported_ops = [
         tf.lite.OpsSet.TFLITE_BUILTINS,
